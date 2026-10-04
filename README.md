@@ -17,7 +17,7 @@
 
 ## 🙏 Credit
 
-Lab 002 is part of a structured Azure curriculum **Jhante Charles** built for me to accelerate my transition to Cloud Security Engineer. He designed the lab and wrote the instructions. I built the execution, walkthrough videos, architecture diagram, security analysis, and write-up.
+Lab 002 is part of a structured Azure curriculum **Jhante Charles** built for me to accelerate my Cloud Security Engineer transition. The lab design and instructions are his. The execution, walkthrough videos, architecture diagram, security analysis, and writeup are mine.
 
 ---
 
@@ -121,7 +121,7 @@ The dotted red line is the one that matters. There is no route from the internet
 | Resource | Name | Notes |
 | --- | --- | --- |
 | Resource Group | `rg-lab02-<yourname>` | I used `rg-lab02-redouard` |
-| Region | `EastUS1` | Pick what's closest to you |
+| Region | `[FILL — the region you deployed to]` | Pick what's closest to you |
 | VNet | `vnet-lab02` | `10.0.0.0/16` |
 | Subnet (public) | `snet-web` | `10.0.1.0/24` |
 | Subnet (private) | `snet-db` | `10.0.2.0/24` |
@@ -129,7 +129,7 @@ The dotted red line is the one that matters. There is no route from the internet
 | Database VM | `vm-db-01` | Ubuntu Server 20.04 LTS, `Standard_B1s` |
 | SSH key pair | `key-lab02` | Created on the web VM, reused on the DB VM |
 
-> 💡 The subnet ranges have to sit cleanly inside the VNet's `/16`. If they overlap or fall outside it, Azure rejects the VNet before you can deploy a VM.
+> 💡 The subnet ranges have to sit cleanly inside the VNet's `/16`. If they overlap each other or fall outside it, Azure rejects the VNet before you ever get to deploy a VM.
 
 ---
 
@@ -153,7 +153,7 @@ The dotted red line is the one that matters. There is no route from the internet
 5. **Networking:** VNet `vnet-lab02`, subnet `snet-web`, public IP **Create new**.
 6. **Review + create** → **Create** → **Download private key** when prompted.
 
-> ⚠️ The private key download happens once. Save the `.pem` somewhere you'll find it. If you lose it, you'll have to redeploy the VM.
+> ⚠️ The private key download happens once. Save the `.pem` somewhere you'll find it. If you lose it, you're redeploying the VM.
 
 ### Phase 3 — The Database Server (private tier)
 
@@ -167,7 +167,7 @@ The dotted red line is the one that matters. There is no route from the internet
    - Public IP: **None**
 6. **Review + create** → **Create**.
 
-> The portal defaults to giving every VM a public IP. Setting it to **None** is a deliberate choice, and it makes this a private tier.
+> The portal defaults to giving every VM a public IP. Setting it to **None** is a deliberate choice, and it's the choice that makes this a private tier.
 
 ### Phase 4 — Validate Connectivity (the jump)
 
@@ -191,7 +191,7 @@ The database VM has no public IP, so you can't reach it from your machine. You r
 
 ### Phase 5 — Lock the Database Down (NSG)
 
-Right now, anything inside the VNet can reach `vm-db-01`. The goal is: only the web subnet.
+Right now anything inside the VNet can reach `vm-db-01`. The goal is: only the web subnet.
 
 1. Open `vm-db-01` → **Networking** → click the attached NSG (it'll have an auto-generated name like `vm-db-01-nsg`).
 2. **Inbound security rules** → **+ Add**.
@@ -210,7 +210,7 @@ Right now, anything inside the VNet can reach `vm-db-01`. The goal is: only the 
    | Name | `Allow-Web-Subnet` |
 
 4. **Add**.
-5. Back in your SSH session on the web VM, run `ping 10.0.2.4` again. Still works — the rule allows exactly what it should.
+5. Back in your SSH session on the web VM, `ping 10.0.2.4` again. Still works — the rule allows exactly what it should.
 
 > **On priority:** NSG rules evaluate from the lowest number up. `100` fires before any of Azure's default rules (which sit at 65000+). Anything that doesn't match an explicit Allow falls through to the default DenyAllInbound at the bottom.
 
@@ -227,8 +227,8 @@ Same session. Not later. See Lab 001 for the $1,000 reason.
 Still early on the cloud security side. Observations, not expert guidance:
 
 - **The web VM is doing two jobs.** It's the application front end *and* the only path to the database. In this lab that's fine. In production, the web tier shouldn't double as the management plane — a dedicated bastion host (or Azure Bastion) should be the jump box, and the web server should never need SSH open to the internet at all.
-- **SSH/22 is open to the whole internet on the web VM.** For a lab, acceptable. For anything real, scope that source to a known IP or replace it with a bastion entirely.
-- **The NSG rule allows any destination port from the web subnet.** The lab says to use `*` since there's no actual database installed. If this were real, that would be `3306` (MySQL) or `5432` (Postgres) — nothing else. "Allow all from a trusted subnet" is still broader than needed.
+- **SSH/22 is open to the whole internet on the web VM.** For a lab, acceptable. For anything real, that source should be scoped to a known IP or replaced with Bastion entirely.
+- **The NSG rule allows any destination port from the web subnet.** The lab says to use `*` since there's no actual database installed. If this were real, that would be `3306` (MySQL) or `5432` (Postgres) — nothing else. "Allow all from a trusted subnet" is still broader than it needs to be.
 - **"No public IP" is necessary, not sufficient.** The database VM was reachable from anywhere in the VNet until Phase 5. Network placement reduces exposure; NSGs enforce it. You need both.
 - **No logging.** No NSG flow logs, no diagnostic settings. If something hit that database VM, I'd have no record of it. Something to come back to.
 
@@ -236,7 +236,7 @@ Still early on the cloud security side. Observations, not expert guidance:
 
 ## 💰 What This Cost
 
-Two `Standard_B1s` VMs, a VNet, and one public IP for roughly an hour.
+Two `Standard_B1s` VMs, a VNet, and one public IP for roughly an hour. `[FILL — actual cost from Cost Management, or "well under a dollar" if you didn't check]`.
 
 The B1s tier is cheap per hour. It stops being cheap if two of them run for a week because you forgot to delete the resource group.
 
