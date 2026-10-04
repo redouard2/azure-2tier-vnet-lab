@@ -121,7 +121,7 @@ The dotted red line is the one that matters. There is no route from the internet
 | Resource | Name | Notes |
 | --- | --- | --- |
 | Resource Group | `rg-lab02-<yourname>` | I used `rg-lab02-redouard` |
-| Region | `[FILL — the region you deployed to]` | Pick what's closest to you |
+| Region | I chose `EastUS1' | Pick what's closest to you |
 | VNet | `vnet-lab02` | `10.0.0.0/16` |
 | Subnet (public) | `snet-web` | `10.0.1.0/24` |
 | Subnet (private) | `snet-db` | `10.0.2.0/24` |
@@ -236,7 +236,7 @@ Still early on the cloud security side. Observations, not expert guidance:
 
 ## 💰 What This Cost
 
-Two `Standard_B1s` VMs, a VNet, and one public IP for roughly an hour. `[FILL — actual cost from Cost Management, or "well under a dollar" if you didn't check]`.
+Two `Standard_B1s` VMs, a VNet, and one public IP for roughly an hour.
 
 The B1s tier is cheap per hour. It stops being cheap if two of them run for a week because you forgot to delete the resource group.
 
