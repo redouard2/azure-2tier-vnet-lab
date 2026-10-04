@@ -121,7 +121,7 @@ The dotted red line is the one that matters. There is no route from the internet
 | Resource | Name | Notes |
 | --- | --- | --- |
 | Resource Group | `rg-lab02-<yourname>` | I used `rg-lab02-redouard` |
-| Region | I chose `EastUS1' | Pick what's closest to you |
+| Region | I chose `EastUS' | Pick what's closest to you |
 | VNet | `vnet-lab02` | `10.0.0.0/16` |
 | Subnet (public) | `snet-web` | `10.0.1.0/24` |
 | Subnet (private) | `snet-db` | `10.0.2.0/24` |
