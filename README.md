@@ -280,7 +280,7 @@ You don't, not from your machine. No public IP means no direct path. You SSH to 
 
 - [Lab 001 — Azure Static Website Hosting](https://github.com/redouard2/azure-static-website-lab)
 - **Lab 002 — Two-Tier Web Application** ← *you are here*
-- Lab 003 — *coming soon*
+- Lab 003 — [Lab 003 — PaaS Migration + Key Vault](https://github.com/redouard2/azure-paas-keyvault-lab)
 
 ---
 
